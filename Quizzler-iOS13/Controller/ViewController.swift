@@ -15,11 +15,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var falseButton: UIButton!
     
     
-   
-    var questionNumber = 0
     var score = 0
+    var quizBrain = QuizBrain()
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         progressBar.progress = 0
         updateUI()
@@ -27,18 +27,21 @@ class ViewController: UIViewController {
     
     
     @IBAction func answerButtonPressed(_ sender: UIButton) {
-        let userAnswer = sender.currentTitle
-        let progressOfTheQuiz = Float(questionNumber+1) / Float(quizArray.count)
-        progressBar.setProgress(progressOfTheQuiz, animated: true)
+        let userAnswer = sender.currentTitle!
+        quizBrain.checkAnswer(userAnswer)
         
-        if userAnswer == quizArray[questionNumber].a {
+        if userAnswer == quizBrain.quizArray[questionNumber].answer {
             score+=1
-            print(score)
+            sender.backgroundColor = UIColor.green
         } else {
-            print("Wrong")
+            sender.backgroundColor = UIColor.red
         }
         
-        if questionNumber < quizArray.count - 1 {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            sender.backgroundColor = UIColor.clear
+        }
+        
+        if questionNumber < quizBrain.quizArray.count - 1 {
             questionNumber+=1
             updateUI()
         } else {
@@ -47,8 +50,9 @@ class ViewController: UIViewController {
     }
     
     func updateUI() {
-        questionLabel.text = quizArray[questionNumber].q
-        
+        questionLabel.text = quizBrain.quizArray[questionNumber].question
+        let progressOfTheQuiz = Float(questionNumber+1) / Float(quizBrain.quizArray.count)
+        progressBar.setProgress(progressOfTheQuiz, animated: true)
     }
 }
 

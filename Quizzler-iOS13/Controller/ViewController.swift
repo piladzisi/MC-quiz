@@ -15,14 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var falseButton: UIButton!
     
     
-    
-    let quizArray = [
-        ["Which is the largest organ in the human body?", "True"],
-        ["It is illegal to pee in the Ocean in Portugal.", "False"],
-        ["Which is the largest organ in the human body?", "True"],
-        
-    ]
-    
+   
     var questionNumber = 0
     var score = 0
     
@@ -37,8 +30,8 @@ class ViewController: UIViewController {
         let userAnswer = sender.currentTitle
         let progressOfTheQuiz = Float(questionNumber+1) / Float(quizArray.count)
         progressBar.setProgress(progressOfTheQuiz, animated: true)
-       
-        if userAnswer == quizArray[questionNumber][1]{
+        
+        if userAnswer == quizArray[questionNumber].a {
             score+=1
             print(score)
         } else {
@@ -50,13 +43,12 @@ class ViewController: UIViewController {
             updateUI()
         } else {
             questionLabel.text = "End of the quiz"
-            
         }
     }
     
     func updateUI() {
-        questionLabel.text = quizArray[questionNumber][0]
-    
+        questionLabel.text = quizArray[questionNumber].q
+        
     }
 }
 

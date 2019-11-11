@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var falseButton: UIButton!
     
     
-    var score = 0
+    
     var quizBrain = QuizBrain()
     
     override func viewDidLoad() {
@@ -28,10 +28,9 @@ class ViewController: UIViewController {
     
     @IBAction func answerButtonPressed(_ sender: UIButton) {
         let userAnswer = sender.currentTitle!
-        quizBrain.checkAnswer(userAnswer)
+        let answer = quizBrain.checkAnswer(userAnswer)
         
-        if userAnswer == quizBrain.quizArray[questionNumber].answer {
-            score+=1
+        if answer == true {
             sender.backgroundColor = UIColor.green
         } else {
             sender.backgroundColor = UIColor.red
@@ -41,18 +40,18 @@ class ViewController: UIViewController {
             sender.backgroundColor = UIColor.clear
         }
         
-        if questionNumber < quizBrain.quizArray.count - 1 {
-            questionNumber+=1
-            updateUI()
-        } else {
-            questionLabel.text = "End of the quiz"
-        }
+//        if questionNumber < quizBrain.quizArray.count - 1 {
+//            questionNumber+=1
+//            updateUI()
+//        } else {
+//            questionLabel.text = "End of the quiz"
+//        }
     }
     
     func updateUI() {
-        questionLabel.text = quizBrain.quizArray[questionNumber].question
-        let progressOfTheQuiz = Float(questionNumber+1) / Float(quizBrain.quizArray.count)
-        progressBar.setProgress(progressOfTheQuiz, animated: true)
+//        questionLabel.text = quizBrain.quizArray[questionNumber].question
+//        let progressOfTheQuiz = Float(questionNumber+1) / Float(quizBrain.quizArray.count)
+//        progressBar.setProgress(progressOfTheQuiz, animated: true)
     }
 }
 

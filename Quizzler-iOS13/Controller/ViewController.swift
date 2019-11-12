@@ -14,44 +14,68 @@ class ViewController: UIViewController {
     @IBOutlet weak var trueButton: UIButton!
     @IBOutlet weak var falseButton: UIButton!
     
+    @IBOutlet weak var restartButton: UIButton!
     
+    @IBOutlet weak var scoreLabel: UILabel!
     
     var quizBrain = QuizBrain()
+    
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        restartButton.isHidden = true
         progressBar.progress = 0
+        
         updateUI()
     }
     
     
     @IBAction func answerButtonPressed(_ sender: UIButton) {
         let userAnswer = sender.currentTitle!
-        let answer = quizBrain.checkAnswer(userAnswer)
-        
-        if answer == true {
+        let userGotItRight = quizBrain.checkAnswer(userAnswer)
+        if userGotItRight {
             sender.backgroundColor = UIColor.green
+            
         } else {
             sender.backgroundColor = UIColor.red
         }
         
+        quizBrain.nextQuestion()
+        updateUI()
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             sender.backgroundColor = UIColor.clear
         }
-        
-//        if questionNumber < quizBrain.quizArray.count - 1 {
-//            questionNumber+=1
-//            updateUI()
-//        } else {
-//            questionLabel.text = "End of the quiz"
-//        }
     }
     
     func updateUI() {
-//        questionLabel.text = quizBrain.quizArray[questionNumber].question
-//        let progressOfTheQuiz = Float(questionNumber+1) / Float(quizBrain.quizArray.count)
-//        progressBar.setProgress(progressOfTheQuiz, animated: true)
+        scoreLabel.text = "Score: \(quizBrain.getScore())"
+        if !quizBrain.endOfQuiz {
+            questionLabel.text = quizBrain.getQuestionText()
+            progressBar.progress = quizBrain.getProgress()
+            
+            
+        } else {
+            questionLabel.text = "End of Quiz"
+            progressBar.progress = quizBrain.calculateProgress()
+            progressBar.progressTintColor = UIColor.green
+            trueButton.isHidden  = true
+            falseButton.isHidden = true
+            restartButton.isHidden = false
+            
+        }
+        
+    }
+    @IBAction func restartButtonClicked(_ sender: Any) {
+        quizBrain.restartQuiz()
+        
+        trueButton.isHidden  = false
+        falseButton.isHidden = false
+        restartButton.isHidden = true
+        progressBar.progressTintColor = UIColor(red:1.00, green:0.46, blue:0.66, alpha:1.0)
+        updateUI()
+        
     }
 }
 
